@@ -36,7 +36,7 @@ The goals / steps of this project are the following:
 
 ####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/sir-siemens/carND-project2/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ###Data Set Summary & Exploration
 
@@ -47,33 +47,40 @@ The code for this step is contained in the second code cell of the IPython noteb
 I used the pandas library to calculate summary statistics of the traffic
 signs data set:
 
-* The size of training set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is ? 34799
+* The size of test set is ?  12630
+* The shape of a traffic sign image is ? 32x32
+* The number of unique classes/labels in the data set is ? 43
 
 ####2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
-The code for this step is contained in the third code cell of the IPython notebook.  
+The code for this step is implemented in the function of statistics_visualization()
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart showing how the data distributed across different class
 
-![alt text][image1]
+[bar_frequency]: ./resource/bar_training.png "Frequency of the dataset"
 
 ###Design and Test a Model Architecture
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fourth code cell of the IPython notebook.
+I only apply the normalization of the image data. The code for this step is implemented 
+def preprocessing(X_train)
 
-As a first step, I decided to convert the images to grayscale because ...
+However, I notice that the training data is quiet unbalanced I apply perspective transformation and adjusting brightness and contrast to balance the training data. They are implemented in the following functions 
+1.random_perspective_transform(image)          (used in final version))
+2.contrast_brightness_rgb(image, alpha , beta) (used in final version))
+3.histogram_equalization(image) (not used in final version)
+4.rgb2gray(image)               (not used in final version) 
+5.contrast_brightness_gray(image, alpha , beta) (not used in final version)
 
-Here is an example of a traffic sign image before and after grayscaling.
+I have tried to convert image to gray scale, however the validation accuracy is not high. So I decide to use 3 channels to the network and augment my dataset in color scale.
+
+Here is an example of a traffic sign image before and after augmentation.
 
 ![alt text][image2]
 
-As a last step, I normalized the image data because ...
-
+ 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
 The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
