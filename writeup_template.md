@@ -204,3 +204,7 @@ The code for making predictions on my final model is located in the last cell of
 | ~0.20   			    |  speed limit 60	    							|
 
 ![alt text][top5]
+
+
+###Final Notes:
+I invest significantly more time in this project than in P1. Thanks to the available deep learning framework, a novice can learn this technique in quite a short time and train their own model. However, the upside of this technique is also the downside of this technique. It automatically learns the features which are relevant to the problem means at the same time, we can not influence them mannually. The only information that we can use to tune the model is the validation accuracy, which makes tuning the model actually a challenging task.
