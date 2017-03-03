@@ -197,10 +197,10 @@ The code for making predictions on my final model is located in the last cell of
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| ~.99         			| Wild animals crossing   									| 
-| ~.99    				|  No entry 							 										|
-| ~.99					| Slippery road											|
-| ~.99	      			| roundabout mandatory				 				|
-| ~.20   			    |  speed limit 60	    							|
+| ~0.99         			| Wild animals crossing   									| 
+| ~0.99    				|  No entry 							 										|
+| ~0.99					| Slippery road											|
+| ~0.99	      			| roundabout mandatory				 				|
+| ~0.20   			    |  speed limit 60	    							|
 
 ![alt text][top5]
