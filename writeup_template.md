@@ -171,22 +171,22 @@ Here are five German traffic signs that I found on the web:
 
 ![alt text][test_images]  
 
-The last image (speed limit from eletronic LED display on highway) might be difficult to classify because it is not provided in the training set. 
+The last two images (4.a rendered sign and 5. speed limit token from eletronic LED display on highway ) might be difficult to classify because it is not provided in the training set. 
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 The code for making predictions on my final model is located in the section of 'Predict the Sign Type for Each Image'
 
 
-Here are the results of the prediction:
+Here are the results of the prediction of LeNet+Dropout:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Wild animals crossing   		| Wild animals crossing   									| 
 | No entry 			| No entry 										|
 | Slippery road					| Slippery road											|
-| roundabout mandatory	      		|roundabout mandatory		 				|
-| speed limit 60			| speed limit 30     							|
+| roundabout mandatory	      		|Keep left 				|
+| speed limit 60			| speed limit 60     							|
 
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. (for both LeNet+Dropout and my modified version). 
@@ -199,9 +199,9 @@ The code for making predictions on my final model is located in the last cell of
 |:---------------------:|:---------------------------------------------:| 
 | ~0.99         			| Wild animals crossing   									| 
 | ~0.99    				|  No entry 							 										|
-| ~0.99					| Slippery road											|
-| ~0.99	      			| roundabout mandatory				 				|
-| ~0.20   			    |  speed limit 60	    							|
+| ~0.99					  | Slippery road											|
+| ~0.25	      			| roundabout mandatory				 				|
+| ~0.35   			    |  speed limit 60	    							|
 
 Result of Lenet+Dropout
 ![alt text][top5]
