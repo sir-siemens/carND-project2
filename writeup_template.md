@@ -32,6 +32,7 @@ The goals / steps of this project are the following:
 [augmented_images]: ./resource/augmentation.png  "augmented data"
 [test_images]: ./resource/test_images.png  "test data"
 [top5]:./resource/classification_result.png  "classification_result"
+[top5_2]:./resource/classification_result2.png  "classification_result2"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -104,17 +105,21 @@ augmentated image
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-The code for my final model is located in the section of Model Architecture (Lenet + dropout)
+The code for my final model is located in the section of Model Architecture (Modified Lenet + dropout)
 
 My final model consisted of is basically the same as Lenet5:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 5x5     	| 1x1 stride, same padding, outputs 28x28x6 	|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 30x30x6 	|
+| RELU					|												|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 28x28x6 	|
 | RELU					|												|
 | Max pooling	      	| 2x2 stride,  outputs 14x14x6 				|
-| Convolution 5x5	    |  1x1 stride, valid padding, outputs 10x10x16		|
+| Convolution 3x3	    |  1x1 stride, valid padding, outputs 12x12x16		|
+| RELU					|												|
+| Convolution 3x3	    |  1x1 stride, valid padding, outputs 10x10x16		|
 | RELU					|												|
 | Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
 | Fully connected		|  400x120    									|
@@ -126,21 +131,20 @@ My final model consisted of is basically the same as Lenet5:
 | Fully connected		|  84x10    									|
  
 
-
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 The code for training the model is located in the section of Train, Validate and Test the Model
 
-To train the model, I use a pre-train stage and a fine tuning stage. In the pre-train stage, I use 100 epoch, learning rate 0.001 and L2 regularzation. And in the fine tuning stage, I lower the learning rate to 0.0005. For both stage I chooset the batch size to be 128
+To train the model, I use a pre-train stage and a fine tuning stage. In the pre-train stage, I train about 10 epoch, learning rate 0.001 and L2 regularzation. And in the fine tuning stage, I lower the learning rate to 0.0005 and train for 100 epoch. For both stage I chooset the batch size to be 128
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 The code for calculating the accuracy of the model is located in training pipeline
 
 My final model results were:
-* training set accuracy of 0.944
-* validation set accuracy of 0.98
-* test set accuracy of 0.961
+* training set accuracy of 0.961
+* validation set accuracy of 0.988
+* test set accuracy of 0.975
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen? 
@@ -149,18 +153,14 @@ If an iterative approach was chosen:
 * Which parameters were tuned? How were they adjusted and why?
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
 
-I choose standard LeNet, because I have no idea what else may be fit for this problem. For the standard LeNet, there are no dropout layers, so I added in the final version and it proved to be a big gain in validation accuracy. One problem that I encountered at the beginning is I get a training accuracy of 100%, however the network fails to generalize well on validation dataset. It seems the network overfits the training set, so I tried both augmentating the training data and using drop out layers, which results in a higher validation accuracy and a lower training accuracy. For tuning, I first use only one dropout layer, then I decide to put dropout layers in all the fully connected layer. In addition, increasing the training EPOCH is also important to catch the model with the highest validation accuracy. 
+I first choose standard LeNet, because I have no idea what else may be fit for this problem. For the standard LeNet, there are no dropout layers, so I added in the final version and it proved to be a big gain in validation accuracy. One problem that I encountered at the beginning is I get a training accuracy of 100%, however the network fails to generalize well on validation dataset. It seems the network overfits the training set, so I tried both augmentating the training data and using drop out layers, which results in a higher validation accuracy and a lower training accuracy. For tuning, I first use only one dropout layer, then I decide to put dropout layers in all the fully connected layer. In addition, increasing the training EPOCH is also important to catch the model with the highest validation accuracy. I finally got 96.1% test accuracy. Then I modify the architecture try to see whether make the model deep may help, so I follow the design pattern of a convnet introduced in the CS231n: Convolutional Neural Networks for Visual Recognition and add 4 convnet followed by fully connected. And I get a performance gain of 1.4 % in test accuracy.
 
 If a well known architecture was chosen:
 * What architecture was chosen?
-
-Lenet
 * Why did you believe it would be relevant to the traffic sign application?
-
-Using a existed working model should spares more time than inventing a new one. 
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well? 
 
-The test accurcy is quite good. 
+Training accuracy is lower than validation accuracy may indicate my model does not overfit the data. In addition, I'm quite satisfy with the test accurcy. 
  
 
 ###Test a Model on New Images
@@ -189,7 +189,7 @@ Here are the results of the prediction:
 | speed limit 60			| speed limit 30     							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of 96.1%
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. (for both LeNet+Dropout and my modified version). 
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
@@ -203,8 +203,13 @@ The code for making predictions on my final model is located in the last cell of
 | ~0.99	      			| roundabout mandatory				 				|
 | ~0.20   			    |  speed limit 60	    							|
 
+Result of Lenet+Dropout
 ![alt text][top5]
+
+Result of ModifiedLenet
+![alt text][top5_2]
+
 
 
 ###Final Notes:
-I invest significantly more time in this project than in P1. Thanks to the available deep learning framework, a novice can learn this technique in quite a short time and train their own model. However, the upside of this technique is also the downside of this technique. It automatically learns the features which are relevant to the problem means at the same time, we can not influence them mannually. The only information that we can use to tune the model is the validation accuracy, which makes tuning the model actually a challenging task.
+I invest significantly more time in this project than in P1. Thanks to the available deep learning framework, a novice can learn this technique in quite a short time and train their models. However, the upside of this technique is also the downside of this technique. It automatically learns the features which are relevant to the problem means at the same time, we can not influence them mannually. The only information that we can use to tune the model is the validation accuracy, which makes tuning the model actually a challenging task. 
