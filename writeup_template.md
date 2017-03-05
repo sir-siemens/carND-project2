@@ -70,6 +70,7 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
 I only apply the normalization of the image data. The code for this step is implemented 
+
 def preprocessing(X_train)
 
 I have also tried to convert image to gray scale, however the validation accuracy is not high. So I decide to use 3 channels to the network and augment my dataset in color scale. The intuition is the color feature should have a contribution to the classification result. 
@@ -78,8 +79,6 @@ I have also tried to convert image to gray scale, however the validation accurac
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
 The code for splitting the data into training and validation sets is contained in the first code cell of the IPython notebook.  
-
-To cross validate my model, I randomly split the training data into a training set and validation set. I did this by ...
 
 My final training set had 4000*43 = 172000 number of images. My validation set and test set are loaded from the provided data
 
@@ -118,7 +117,6 @@ My final model consisted of is basically the same as Lenet5:
 | Convolution 5x5	    |  1x1 stride, valid padding, outputs 10x10x16		|
 | RELU					|												|
 | Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
-
 | Fully connected		|  400x120    									|
 | RELU		|    									|
 | Dropout		| keep_prob = 0.5    									|
@@ -126,8 +124,6 @@ My final model consisted of is basically the same as Lenet5:
 | RELU		|    									|
 | Dropout		| keep_prob = 0.5    									|
 | Fully connected		|  84x10    									|
-|						|												|
-|						|												|
  
 
 
@@ -139,7 +135,7 @@ To train the model, I use a pre-train stage and a fine tuning stage. In the pre-
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in training pipeline
 
 My final model results were:
 * training set accuracy of 0.944
@@ -148,22 +144,22 @@ My final model results were:
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen? 
-I choose standard LeNet, because I have no idea which one is the best fit for this problem  
 * What were some problems with the initial architecture?
-There are no dropout layer, which I added in the final version and proved to be a big gain in accuracy.
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-
-One problem that I encountered at the beginning is I get a training accuracy of 100%, however the network fails to generalize well on validation dataset. It seems the network overfits the training set, so I tried both augmentating the training data and using drop out layer, which results in a higher validation accuracy and a lower training accuracy. 
 * Which parameters were tuned? How were they adjusted and why?
-I first use only one dropout layer, then I decide to put drop out layer in all the fully connected layer
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+
+I choose standard LeNet, because I have no idea what else may be fit for this problem. For the standard LeNet, there are no dropout layers, so I added in the final version and it proved to be a big gain in validation accuracy. One problem that I encountered at the beginning is I get a training accuracy of 100%, however the network fails to generalize well on validation dataset. It seems the network overfits the training set, so I tried both augmentating the training data and using drop out layers, which results in a higher validation accuracy and a lower training accuracy. For tuning, I first use only one dropout layer, then I decide to put dropout layers in all the fully connected layer. In addition, increasing the training EPOCH is also important to catch the model with the highest validation accuracy. 
 
 If a well known architecture was chosen:
 * What architecture was chosen?
+
 Lenet
 * Why did you believe it would be relevant to the traffic sign application?
+
 Using a existed working model should spares more time than inventing a new one. 
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well? 
+
 The test accurcy is quite good. 
  
 
@@ -201,10 +197,14 @@ The code for making predictions on my final model is located in the last cell of
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| ~.99         			| Wild animals crossing   									| 
-| ~.99    				|  No entry 							 										|
-| ~.99					| Slippery road											|
-| ~.99	      			| roundabout mandatory				 				|
-| ~.20   			    |  speed limit 60	    							|
+| ~0.99         			| Wild animals crossing   									| 
+| ~0.99    				|  No entry 							 										|
+| ~0.99					| Slippery road											|
+| ~0.99	      			| roundabout mandatory				 				|
+| ~0.20   			    |  speed limit 60	    							|
 
 ![alt text][top5]
+
+
+###Final Notes:
+I invest significantly more time in this project than in P1. Thanks to the available deep learning framework, a novice can learn this technique in quite a short time and train their own model. However, the upside of this technique is also the downside of this technique. It automatically learns the features which are relevant to the problem means at the same time, we can not influence them mannually. The only information that we can use to tune the model is the validation accuracy, which makes tuning the model actually a challenging task.
